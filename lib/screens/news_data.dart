@@ -23,7 +23,6 @@ class NewsData extends StatelessWidget {
         return ListView.builder(
           itemCount: HomeCubit.get(context).articles.length,
           itemBuilder: (context, index) {
-
             return Articleitem(article: HomeCubit.get(context).articles[index]);
           },
         );
