@@ -23,10 +23,10 @@ class HomeCubit extends Cubit<HomeStates> {
     getNewsData(sources[selectedIndex].id ?? '');
   }
 
-  Future<void> getSources() async {
+  Future<void> getSources(String categoryId) async {
     emit(GetSourcesLoadingState());
     try {
-      Response response = await dio.get('$BASEURL/v2/top-headlines/sources?apiKey=$APIKEY');
+      Response response = await dio.get('$BASEURL/v2/top-headlines/sources?apiKey=$APIKEY&category=$categoryId');
 
       SourcesResponse sourcesResponse = SourcesResponse.fromJson(response.data);
 

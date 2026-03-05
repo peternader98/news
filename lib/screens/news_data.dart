@@ -20,6 +20,9 @@ class NewsData extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        if (HomeCubit.get(context).articles.isEmpty) {
+          return Center(child: Text('No Data'));
+        }
         return ListView.builder(
           itemCount: HomeCubit.get(context).articles.length,
           itemBuilder: (context, index) {
