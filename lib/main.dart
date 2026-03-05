@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:news/core/internet_checker.dart';
 import 'package:news/screens/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  InternetChecker().initialize();
   runApp(const MyApp());
 }
 

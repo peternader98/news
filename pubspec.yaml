@@ -16,6 +16,8 @@ dependencies:
   bloc: ^9.2.0
   flutter_bloc: ^9.1.1
   loader_overlay: ^5.0.0
+  connectivity_plus: ^7.0.0
+  internet_connection_checker: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

@@ -4,13 +4,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/core/constants.dart';
 import 'package:news/models/news_response.dart';
 import 'package:news/models/sources_response.dart';
+import 'package:news/repository/home_repo.dart';
 import 'package:news/screens/bloc/states.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
-  HomeCubit() : super(HomeInit());
+  HomeRepo repo;
+  HomeCubit(this.repo) : super(HomeInit());
 
   static HomeCubit get(context) => BlocProvider.of(context);
-  Dio dio = Dio();
+  Dio dio = Dio(
+    BaseOptions(
+      baseUrl: BASEURL,
+      headers: {
+        'x-api-key' : APIKEY,
+      }
+    ),
+  );
 
   int selectedIndex = 0;
 
@@ -26,9 +35,7 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> getSources(String categoryId) async {
     emit(GetSourcesLoadingState());
     try {
-      Response response = await dio.get('$BASEURL/v2/top-headlines/sources?apiKey=$APIKEY&category=$categoryId');
-
-      SourcesResponse sourcesResponse = SourcesResponse.fromJson(response.data);
+      SourcesResponse sourcesResponse = await repo.getSources(categoryId);
 
       sources = sourcesResponse.sources ?? [];
 
@@ -42,9 +49,7 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> getNewsData(String sourceId) async {
     emit(GetNewsLoadingState());
     try {
-      Response response = await dio.get('$BASEURL/v2/everything?sources=$sourceId&apiKey=$APIKEY');
-
-      NewsResponse newsResponse = NewsResponse.fromJson(response.data);
+      NewsResponse newsResponse = await repo.getNewsData(sourceId);
 
       articles = newsResponse.articles ?? [];
 

@@ -20,7 +20,7 @@ class CategoryModel {
       CategoryModel(
         id: 'sports',
         label: 'Sports',
-        image: 'assets/images/${theme}_sports.png',
+        image: 'assets/images/${theme}_sport.png',
       ),
       CategoryModel(
         id: 'technology',
