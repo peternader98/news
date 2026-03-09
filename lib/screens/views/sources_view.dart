@@ -2,41 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:news/core/api_manager.dart';
 import 'package:news/core/internet_checker.dart';
+import 'package:news/di.dart';
 import 'package:news/repository/home_local_repo.dart';
 import 'package:news/repository/home_remote_repo.dart';
 import 'package:news/screens/bloc/cubit.dart';
 import 'package:news/screens/bloc/states.dart';
 import 'package:news/screens/news_data.dart';
 
-class SourcesView extends StatefulWidget {
+class SourcesView extends StatelessWidget {
   SourcesView({required this.categoryId, super.key});
 
   String categoryId;
 
   @override
-  State<SourcesView> createState() => _SourcesViewState();
-}
-
-class _SourcesViewState extends State<SourcesView> {
-  bool isConnected = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    InternetChecker().internetStatusStream.listen((event) {
-      isConnected = event;
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
 
     return BlocProvider(
-      key: ValueKey(isConnected),
-      create: (context) => HomeCubit(isConnected ? HomeRemoteRepo() : HomeLocalRepo())..getSources(widget.categoryId),
+      create: (context) => getIt<HomeCubit>()..getSources(categoryId),
       child: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {
           if (state is GetSourcesLoadingState) {

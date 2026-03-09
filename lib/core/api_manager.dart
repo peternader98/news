@@ -1,34 +1,26 @@
 import 'package:dio/dio.dart';
-import 'package:news/models/news_response.dart';
-import 'package:news/models/sources_response.dart';
+import 'package:injectable/injectable.dart';
 
 import 'constants.dart';
 
+@lazySingleton
 class ApiManager {
 
-  static final dio = Dio();
+  Dio dio = Dio(
+    BaseOptions(
+        baseUrl: BASEURL,
+        headers: {
+          'x-api-key' : APIKEY,
+        }
+    ),
+  );
 
-  static Future<SourcesResponse?> getSources() async {
-    try{
-      Response response = await dio.get('$BASEURL/v2/top-headlines/sources?apiKey=$APIKEY');
-
-      SourcesResponse sourcesResponse = SourcesResponse.fromJson(response.data);
-
-      return sourcesResponse;
-    } catch(e) {
-      throw Exception('Something went wrong');
-    }
+  Future<Response<dynamic>> get(String url) async {
+    return await dio.get(url);
   }
 
-  static Future<NewsResponse?> getNewsData(String sourceId) async {
-    try {
-      Response response = await dio.get('$BASEURL/v2/everything?sources=$sourceId&apiKey=$APIKEY');
-
-      NewsResponse newsResponse = NewsResponse.fromJson(response.data);
-
-      return newsResponse;
-    } catch(e) {
-      throw Exception('Something went wrong');
-    }
+  Future<Response<dynamic>> post(String url) async {
+    return await dio.post(url);
   }
+
 }

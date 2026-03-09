@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news/core/theme/bloc/cubit.dart';
+import 'package:news/core/theme/dark_theme.dart';
+import 'package:news/core/theme/light_theme.dart';
 
 class AppDrawer extends StatelessWidget {
-
   Function onDrawerClicked;
 
   AppDrawer({required this.onDrawerClicked, super.key});
@@ -59,7 +61,10 @@ class AppDrawer extends StatelessWidget {
                 SizedBox(height: 12),
                 Row(
                   children: [
-                    Icon(Icons.imagesearch_roller_outlined, color: Color(0xFFFFFFFF)),
+                    Icon(
+                      Icons.imagesearch_roller_outlined,
+                      color: Color(0xFFFFFFFF),
+                    ),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -76,8 +81,19 @@ class AppDrawer extends StatelessWidget {
                 SizedBox(height: 8),
                 DropdownMenu(
                   width: double.infinity,
-                  initialSelection: 'light',
-                  onSelected: (value) {},
+                  initialSelection: ThemeCubit.get(context).themeLable,
+                  onSelected: (value) {
+                    if (value == 'light') {
+                      ThemeCubit.get(context).themeLable = 'light';
+                      ThemeCubit.get(context).theme = DarkTheme();
+                      ThemeCubit.get(context).changeTheme();
+                    } else {
+                      ThemeCubit.get(context).themeLable = 'dark';
+                      ThemeCubit.get(context).theme = LightTheme();
+                      ThemeCubit.get(context).changeTheme();
+                    }
+                    Navigator.pop(context);
+                  },
                   textStyle: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

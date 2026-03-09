@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/core/internet_checker.dart';
+import 'package:news/core/theme/bloc/cubit.dart';
+import 'package:news/core/theme/bloc/states.dart';
+import 'package:news/di.dart';
 import 'package:news/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  InternetChecker().initialize();
-  runApp(const MyApp());
+  InternetConnectivity().initialize();
+  configureDependencies();
+  runApp(BlocProvider(
+    create: (context) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeStates>(
+          builder: (context, state) {
+            return MyApp();
+          }
+      )
+    ,
+  ),
+  );
 }
 
 class MyApp extends StatelessWidget {

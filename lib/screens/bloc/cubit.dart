@@ -1,25 +1,16 @@
-import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/core/constants.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news/models/news_response.dart';
 import 'package:news/models/sources_response.dart';
 import 'package:news/repository/home_repo.dart';
 import 'package:news/screens/bloc/states.dart';
 
+@injectable
 class HomeCubit extends Cubit<HomeStates> {
   HomeRepo repo;
   HomeCubit(this.repo) : super(HomeInit());
 
   static HomeCubit get(context) => BlocProvider.of(context);
-  Dio dio = Dio(
-    BaseOptions(
-      baseUrl: BASEURL,
-      headers: {
-        'x-api-key' : APIKEY,
-      }
-    ),
-  );
 
   int selectedIndex = 0;
 
